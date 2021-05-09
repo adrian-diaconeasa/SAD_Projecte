@@ -16,7 +16,7 @@ Para crear un proyecto vacío:
 
 Antes de empezar, lo primero que tenemos que hacer es descomprimir la carpeta:
 
-	node.modules.zip
+	node_modules.zip
 
 Para inicializar el servidor, debemos utilizar el comando:
 

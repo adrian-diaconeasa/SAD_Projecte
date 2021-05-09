@@ -1,0 +1,77 @@
+<div id="room-id" data-room-id="<%= @room.try(:id) %>"></div>
+<div id="user-id" data-user-id="<%= current_user.id %>"></div>
+<style>
+  .divScroll {
+    overflow:scroll;
+    height:700px;
+    width:200px;
+  }
+  </style>
+<div class="container-fluid  ">
+
+
+  <div class="row">
+    <div class="col-2 rooms-sidebar ">
+      <div class="card no-outline bg-light mb-2 ">
+        <div class="card-body">
+          <% if signed_in? %>
+          <small>En línea como: </small><br>
+          <small><b><%= current_user.email %><br></small><br></b>
+          <%= button_to 'Sign out', sign_out_path, method: :delete %>
+        <% else %>
+          <%= link_to 'Sign in', sign_in_path %>
+        <% end %>
+        <div id="flash">
+          <% flash.each do |key, value| %>
+            <div class="flash <%= key %>"><%= value %></div>
+          <% end %>
+        </div>
+        </div>
+      </div>
+      <hr>
+      <%= render 'form', room: Room.new %>
+      <hr>
+      <div class="divScroll row-9">
+      <% @rooms.each do |room| %>
+
+        <%= link_to room, class: 'room-link' do %>
+          <% active_class = (@room == room) ? 'active' : '' %>
+          <div class="card no-outline mb-2 room-card <%= active_class %>">
+            <div class="card-body">
+              <span class='name'><%= room.name %></span><br>
+              <span class='member-count'>
+                <small><%= room.users.uniq.count %> Participantes</small>
+              </span>
+            </div>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+    </div>
+    <div class="col-9">
+      <% if @room.present? %>
+        <div class="chat-room ">
+          <nav class="navbar navbar-light">
+            <span class="navbar-brand" href="#">
+              <b><%= @room.name %></b>
+            </span>
+          </nav>
+          <div id="messages">
+            <% @room.messages.each do |message| %>
+              <%= render 'messages/message', message: message %>
+            <% end %>
+          </div>
+          <div class="chat-box">
+            <%= render 'messages/form', message: Message.new, room: @room %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+
+<button id="dark-mode-toggle" class="dark-mode-toggle">
+  <svg width="100%" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 1000"><path fill="currentColor" d="M8,256C8,393,119,504,256,504S504,393,504,256,393,8,256,8,8,119,8,256ZM256,440V72a184,184,0,0,1,0,368Z" transform="translate(-8 -8)"/></svg>
+</button>
+</div>
